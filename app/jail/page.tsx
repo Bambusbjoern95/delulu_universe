@@ -1,24 +1,24 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import Link from 'next/link';
+import { useEffect, useState } from "react";
+import Link from "next/link";
 
-type JailState = 'locked' | 'escaped' | 'failed';
+type JailState = "locked" | "escaped" | "failed";
 
 export default function Jail() {
-  const [state, setState] = useState<JailState>('locked');
+  const [state, setState] = useState<JailState>("locked");
   const [timeLeft, setTimeLeft] = useState(30);
 
   useEffect(() => {
-    if (state !== 'locked') return;
+    if (state !== "locked") return;
 
     if (timeLeft <= 0) {
-      setState('failed');
+      setState("failed");
       return;
     }
 
     const timer = setTimeout(() => {
-      setTimeLeft(t => t - 1);
+      setTimeLeft((t) => t - 1);
     }, 1000);
 
     return () => clearTimeout(timer);
@@ -27,68 +27,82 @@ export default function Jail() {
   return (
     <main
       style={{
-        minHeight: '100vh',
-        background: '#000',
-        color: '#fff',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        fontFamily: 'system-ui',
-        textAlign: 'center',
-        padding: '32px',
+        minHeight: "100vh",
+        background: "#050505",
+        color: "#ffffff",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        fontFamily: "system-ui",
+        textAlign: "center",
+        padding: "24px",
       }}
     >
-      <h1 style={{ fontSize: '3rem', marginBottom: '16px' }}>JAIL</h1>
-
-      {state === 'locked' && (
+      {state === "locked" && (
         <>
-          <p style={{ opacity: 0.7, marginBottom: '24px' }}>
-            Don’t waste the first 5 seconds.
+          <h1 style={{ fontSize: "2rem", marginBottom: "12px" }}>
+            You are in jail
+          </h1>
+          <p style={{ opacity: 0.8, marginBottom: "24px" }}>
+            Escape before the timer hits zero.
           </p>
 
-          <p style={{ fontSize: '2rem', marginBottom: '24px' }}>
-            {timeLeft}s
+          <p style={{ fontSize: "1.5rem", marginBottom: "24px" }}>
+            ⏳ {timeLeft}s
           </p>
 
           <button
-            onClick={() => setState('escaped')}
+            onClick={() => setState("escaped")}
             style={{
-              padding: '12px 24px',
-              fontSize: '1rem',
-              background: '#fff',
-              color: '#000',
-              border: 'none',
-              cursor: 'pointer',
-              borderRadius: '6px',
+              padding: "12px 24px",
+              borderRadius: "12px",
+              border: "none",
+              background: "#ffffff",
+              color: "#000000",
+              fontWeight: 700,
+              cursor: "pointer",
             }}
           >
-            ESCAPE
+            Escape
           </button>
         </>
       )}
 
-      {state === 'escaped' && (
+      {state === "escaped" && (
         <>
-          <p style={{ fontSize: '1.5rem', marginBottom: '24px' }}>
-            You escaped.
+          <h1 style={{ fontSize: "2rem", marginBottom: "12px" }}>
+            You escaped 🏃‍♀️
+          </h1>
+          <p style={{ opacity: 0.8, marginBottom: "24px" }}>
+            Welcome back to the feed.
           </p>
-          <Link href="/feed" style={{ color: '#fff', opacity: 0.8 }}>
-            Back to Feed
-          </Link>
         </>
       )}
 
-      {state === 'failed' && (
+      {state === "failed" && (
         <>
-          <p style={{ fontSize: '1.5rem', marginBottom: '24px' }}>
-            Too slow.
+          <h1 style={{ fontSize: "2rem", marginBottom: "12px" }}>
+            You failed 💀
+          </h1>
+          <p style={{ opacity: 0.8, marginBottom: "24px" }}>
+            Time ran out.
           </p>
-          <Link href="/feed" style={{ color: '#fff', opacity: 0.8 }}>
-            Back to Feed
-          </Link>
         </>
       )}
+
+      <Link
+        href="/feed"
+        style={{
+          marginTop: "32px",
+          textDecoration: "none",
+          color: "#ffffff",
+          opacity: 0.7,
+          fontSize: "0.9rem",
+        }}
+      >
+        ← Back to Feed
+      </Link>
     </main>
   );
 }
