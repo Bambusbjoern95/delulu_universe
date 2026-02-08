@@ -57,7 +57,7 @@ export default function Home() {
       <div style={{ width: "min(520px, 92vw)", textAlign: "center" }}>
         <h1 style={{ fontSize: 36, marginBottom: 8 }}>Delulu Clicker 💖</h1>
         <p style={{ opacity: 0.8, marginBottom: 18 }}>
-          Click the Button as oft you can in {GAME_SECONDS}s. {status}
+          Click the Button as often you can in {GAME_SECONDS}s. {status}
         </p>
 
         <div
