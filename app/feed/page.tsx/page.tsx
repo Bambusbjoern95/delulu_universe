@@ -1,4 +1,4 @@
-export default function Theory() {
+export default function Feed() {
   return (
     <main
       style={{
@@ -11,7 +11,7 @@ export default function Theory() {
         fontFamily: 'system-ui',
       }}
     >
-      <h1>Theory Room</h1>
+      <h1>Feed</h1>
     </main>
   );
 }
