@@ -1,0 +1,59 @@
+"use client";
+
+import Link from "next/link";
+
+const THEORIES = [
+  {
+    id: "001",
+    title: "THEORY #001 — 3:27 IS NOT A TIME, IT’S A TRIGGER",
+    hook: "A reality glitch keeps appearing at 3:27. People think it’s random. The game disagrees.",
+    endsInSeconds: 120,
+  },
+  {
+    id: "002",
+    title: "THEORY #002 — THE ESCAPE ECONOMY",
+    hook: "If someone escapes jail, the feed lights up. Head-hunts start. Coins move. Chaos becomes currency.",
+    endsInSeconds: 180,
+  },
+];
+
+export default function Home() {
+  return (
+    <main style={{ minHeight: "100vh", padding: 24, display: "grid", placeItems: "center" }}>
+      <div style={{ width: "min(820px, 94vw)" }}>
+        <h1 style={{ fontSize: 34, marginBottom: 6 }}>Delulu Universe 🧠💅✨</h1>
+        <p style={{ opacity: 0.75, marginBottom: 18 }}>
+          Pick a theory. Upvote evidence. Influence canon. Miss the deadline → jail.
+        </p>
+
+        <div style={{ display: "grid", gap: 12 }}>
+          {THEORIES.map((t) => (
+            <Link
+              key={t.id}
+              href={`/theory/${t.id}`}
+              style={{
+                display: "block",
+                padding: 16,
+                borderRadius: 16,
+                border: "1px solid rgba(255,255,255,0.14)",
+                background: "rgba(255,255,255,0.06)",
+                textDecoration: "none",
+                color: "inherit",
+              }}
+            >
+              <div style={{ fontSize: 18, fontWeight: 700, marginBottom: 6 }}>{t.title}</div>
+              <div style={{ opacity: 0.8, marginBottom: 10 }}>{t.hook}</div>
+              <div style={{ opacity: 0.7, fontSize: 13 }}>
+                ⏳ Prototype deadline: {t.endsInSeconds}s (test timer)
+              </div>
+            </Link>
+          ))}
+        </div>
+
+        <div style={{ marginTop: 16, opacity: 0.6, fontSize: 12 }}>
+          Prototype note: everything is in-app. No external communities required. 💅
+        </div>
+      </div>
+    </main>
+  );
+}
