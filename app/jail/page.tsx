@@ -1,66 +1,66 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import Link from "next/link";
+import { useEffect, useState } from 'react';
+import Link from 'next/link';
 
-type JailState = "locked" | "escaped" | "failed";
+type JailState = 'locked' | 'escaped' | 'failed';
 
 export default function Jail() {
-  const [state, setState] = useState<JailState>("locked");
+  const [state, setState] = useState<JailState>('locked');
   const [timeLeft, setTimeLeft] = useState(30);
 
   useEffect(() => {
-    if (state !== "locked") return;
+    if (state !== 'locked') return;
 
     if (timeLeft <= 0) {
-      setState("failed");
+      setState('failed');
       return;
     }
 
     const timer = setTimeout(() => {
-      setTimeLeft((t) => t - 1);
+      setTimeLeft(t => t - 1);
     }, 1000);
 
     return () => clearTimeout(timer);
   }, [timeLeft, state]);
 
-  const escape = () => {
-    if (state === "locked") {
-      setState("escaped");
-    }
-  };
-
   return (
     <main
       style={{
-        minHeight: "100vh",
-        background: "radial-gradient(circle at top, #1a1a1a, #000)",
-        color: "#fff",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        fontFamily: "monospace",
-        textAlign: "center",
-        padding: "24px",
+        minHeight: '100vh',
+        background: '#000',
+        color: '#fff',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        fontFamily: 'system-ui',
+        textAlign: 'center',
+        padding: '32px',
       }}
     >
-      {state === "locked" && (
+      <h1 style={{ fontSize: '3rem', marginBottom: '16px' }}>JAIL</h1>
+
+      {state === 'locked' && (
         <>
-          <h1>JAIL</h1>
-          <p>Time left: {timeLeft}s</p>
+          <p style={{ opacity: 0.7, marginBottom: '24px' }}>
+            Don’t waste the first 5 seconds.
+          </p>
+
+          <p style={{ fontSize: '2rem', marginBottom: '24px' }}>
+            {timeLeft}s
+          </p>
 
           <button
-            onClick={escape}
+            onClick={() => setState('escaped')}
             style={{
-              marginTop: "20px",
-              padding: "14px 24px",
-              background: "#ff0055",
-              border: "none",
-              borderRadius: "8px",
-              color: "#fff",
-              fontSize: "16px",
-              cursor: "pointer",
+              padding: '12px 24px',
+              fontSize: '1rem',
+              background: '#fff',
+              color: '#000',
+              border: 'none',
+              cursor: 'pointer',
+              borderRadius: '6px',
             }}
           >
             ESCAPE
@@ -68,34 +68,27 @@ export default function Jail() {
         </>
       )}
 
-      {state === "escaped" && (
+      {state === 'escaped' && (
         <>
-          <h1>ESCAPED</h1>
-          <p>You got out.</p>
-
-          <Link href="/feed" style={linkStyle}>
-            → Back to Feed
+          <p style={{ fontSize: '1.5rem', marginBottom: '24px' }}>
+            You escaped.
+          </p>
+          <Link href="/feed" style={{ color: '#fff', opacity: 0.8 }}>
+            Back to Feed
           </Link>
         </>
       )}
 
-      {state === "failed" && (
+      {state === 'failed' && (
         <>
-          <h1>FAILED</h1>
-          <p>You waited too long.</p>
-
-          <Link href="/feed" style={linkStyle}>
-            → Back to Feed
+          <p style={{ fontSize: '1.5rem', marginBottom: '24px' }}>
+            Too slow.
+          </p>
+          <Link href="/feed" style={{ color: '#fff', opacity: 0.8 }}>
+            Back to Feed
           </Link>
         </>
       )}
     </main>
   );
 }
-
-const linkStyle = {
-  marginTop: "32px",
-  textDecoration: "none",
-  color: "#aaa",
-  fontSize: "14px",
-};
