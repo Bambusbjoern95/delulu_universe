@@ -3,17 +3,21 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 
-type JailState = "locked" | "escaped" | "failed";
+type JailState = "locked" | "noise" | "panic" | "failed";
 
 export default function Jail() {
-  const [state, setState] = useState<JailState>("locked");
   const [timeLeft, setTimeLeft] = useState(30);
+  const [state, setState] = useState<JailState>("locked");
+  const [message, setMessage] = useState(
+    "You wake up in a cold jail cell. The door is locked."
+  );
 
+  // countdown
   useEffect(() => {
-    if (state !== "locked") return;
-
+    if (state === "failed") return;
     if (timeLeft <= 0) {
       setState("failed");
+      setMessage("Time’s up. The guards are coming.");
       return;
     }
 
@@ -24,71 +28,75 @@ export default function Jail() {
     return () => clearTimeout(timer);
   }, [timeLeft, state]);
 
+  function makeNoise() {
+    setState("noise");
+    setMessage(
+      "You scream and bang the door. Footsteps echo down the hallway."
+    );
+  }
+
+  function panic() {
+    setState("panic");
+    setMessage(
+      "You panic. Your heart races. Breathing gets harder. Bad choice."
+    );
+  }
+
   return (
     <main
       style={{
         minHeight: "100vh",
-        background: "#050505",
-        color: "#ffffff",
+        background: "#000",
+        color: "#fff",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        fontFamily: "system-ui",
         textAlign: "center",
+        fontFamily: "system-ui",
         padding: "24px",
       }}
     >
-      {state === "locked" && (
-        <>
-          <h1 style={{ fontSize: "2rem", marginBottom: "12px" }}>
-            You are in jail
-          </h1>
-          <p style={{ opacity: 0.8, marginBottom: "24px" }}>
-            Escape before the timer hits zero.
-          </p>
+      <h1 style={{ fontSize: "2.5rem", marginBottom: "12px" }}>JAIL</h1>
 
-          <p style={{ fontSize: "1.5rem", marginBottom: "24px" }}>
-            ⏳ {timeLeft}s
-          </p>
+      <p style={{ opacity: 0.8, marginBottom: "16px" }}>{message}</p>
 
+      <p style={{ fontSize: "1.2rem", marginBottom: "24px" }}>
+        ⏳ {timeLeft}s
+      </p>
+
+      {state !== "failed" ? (
+        <div style={{ display: "flex", gap: "12px" }}>
           <button
-            onClick={() => setState("escaped")}
+            onClick={makeNoise}
             style={{
-              padding: "12px 24px",
-              borderRadius: "12px",
-              border: "none",
-              background: "#ffffff",
-              color: "#000000",
-              fontWeight: 700,
+              padding: "10px 16px",
+              background: "#111",
+              border: "1px solid #555",
+              color: "#fff",
               cursor: "pointer",
             }}
           >
-            Escape
+            Bang the door
           </button>
-        </>
-      )}
 
-      {state === "escaped" && (
-        <>
-          <h1 style={{ fontSize: "2rem", marginBottom: "12px" }}>
-            You escaped 🏃‍♀️
-          </h1>
-          <p style={{ opacity: 0.8, marginBottom: "24px" }}>
-            Welcome back to the feed.
-          </p>
-        </>
-      )}
-
-      {state === "failed" && (
-        <>
-          <h1 style={{ fontSize: "2rem", marginBottom: "12px" }}>
-            You failed 💀
-          </h1>
-          <p style={{ opacity: 0.8, marginBottom: "24px" }}>
-            Time ran out.
-          </p>
-        </>
+          <button
+            onClick={panic}
+            style={{
+              padding: "10px 16px",
+              background: "#300",
+              border: "1px solid #900",
+              color: "#fff",
+              cursor: "pointer",
+            }}
+          >
+            Panic
+          </button>
+        </div>
+      ) : (
+        <p style={{ color: "#f55", fontWeight: 700 }}>
+          🚨 YOU FAILED 🚨
+        </p>
       )}
 
       <Link
@@ -96,7 +104,7 @@ export default function Jail() {
         style={{
           marginTop: "32px",
           textDecoration: "none",
-          color: "#ffffff",
+          color: "#fff",
           opacity: 0.7,
           fontSize: "0.9rem",
         }}
